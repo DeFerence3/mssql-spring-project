@@ -2,6 +2,7 @@ package com.play.mssql.controller
 
 import com.play.mssql.core.Responser
 import com.play.mssql.entity.Leads
+import com.play.mssql.exception.LinenTrackApiException
 import com.play.mssql.service.leads.LeadsServiceImpl
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -28,6 +29,12 @@ class LeadsController @Autowired constructor(
 
     @GetMapping("/getOne")
     fun getOne(@RequestParam patientId: Int): ResponseEntity<Responser> {
+
+        println("PatientId:$patientId")
+        if (patientId == 0 ) {
+            throw LinenTrackApiException(HttpStatus.NOT_FOUND,"Bad req")
+        }
+
         val patient = leadsServiceImpl.getOne(patientId)
         val response: ResponseEntity<Responser>
 
